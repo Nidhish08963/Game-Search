@@ -1,68 +1,54 @@
-import { useState } from "react";
-import ListGroup from "./components/ListGroup"
-import Alert from "./components/Alert"
-import Heading from "./components/Header";
-import NavBar from "./components/NavBar";
-import { games, type Game } from "./data/games";
-
+import { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import HomePage from './HomePage';
+import GameDetails from './components/GameDetails';
+import NavBar from './components/NavBar';
+import { type Game } from './data/games';
 
 function App() {
-  const [alertColor, setAlertColor] = useState("secondary");
-  const [gameQuery, setGameQuery] = useState({
+  const [gameQuery, setGameQuery] = useState<{genre: string, sortOrder: string, searchText: string}>({
         genre:"", 
-        rating:null,
-        sortOrder:""
-  })
-  const handleSelectItem = (game: Game, index: number) => {
-    console.log(game.title, index);
-    // Change color based on index
-    if (index === 0) setAlertColor("primary");
-    else if (index === 1) setAlertColor("success");
-    else if (index === 2) setAlertColor("danger");
-    else setAlertColor("secondary");
-  }
-    
-  //filter data of games
-  let filteredGames = [...games]
- if( gameQuery.genre !== "") {
-  filteredGames = filteredGames.filter(game => game.genre === gameQuery.genre);
- }
+        sortOrder:"",
+        searchText: ""
+  });
 
- if(gameQuery.rating !== null){
-  if(gameQuery.rating === 10) {
-    filteredGames.sort((a,b) => b.rating - a.rating)
-  }
-  else if(gameQuery.rating === 1){
-    filteredGames.sort((a,b) => a.rating - b.rating)
-  }
- }
+  const [games, setGames] = useState<Game[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
- if(gameQuery.sortOrder !== "") {
-  if(gameQuery.sortOrder === "Relevance") {
-    filteredGames.sort((a,b) => a.title.localeCompare(b.title))
-  }
-  else if(gameQuery.sortOrder === "Newest to Oldest") {
-    filteredGames.sort((a,b) => b.releaseYear - a.releaseYear)
-  }
-  else if(gameQuery.sortOrder === "Oldest to Newest") {
-    filteredGames.sort((a,b) => a.releaseYear - b.releaseYear)
-  }
- }
+  useEffect(() => {
+    fetch('https://www.freetogame.com/api/games')
+      .then(res => {
+        if (!res.ok) throw new Error("Could not fetch games");
+        return res.json();
+      })
+      .then(data => {
+        setGames(data);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        setError(err.message);
+        setIsLoading(false);
+      });
+  }, []);
 
-  return (  
-  <div className="container py-3">
-    <NavBar
-    onSelectSort={(sortOrder) => setGameQuery({...gameQuery, sortOrder})}
-    onSelectRating={(rating) => setGameQuery({...gameQuery, rating})}
-    onSelectGenre={(genre) => setGameQuery({...gameQuery, genre})}/>
-    <Heading heading = "Game Searcher"/>
-    <ListGroup 
-    items = {filteredGames} 
-    onSelectItem= {handleSelectItem}  
-    />
-    <Alert color={alertColor}>New <span>Alert</span></Alert>
-  </div>
-  )
+  // Extract unique genres from the fetched games
+  const uniqueGenres = Array.from(new Set(games.map(g => g.genre))).sort();
+
+  return (
+    <BrowserRouter>
+      <NavBar
+        genres={uniqueGenres}
+        onSelectSort={(sortOrder) => setGameQuery({...gameQuery, sortOrder})}
+        onSelectGenre={(genre) => setGameQuery({...gameQuery, genre})}
+        onSearch={(searchText) => setGameQuery({...gameQuery, searchText})}
+      />
+      <Routes>
+        <Route path="/" element={<HomePage gameQuery={gameQuery} games={games} isLoading={isLoading} error={error} />} />
+        <Route path="/game/:id" element={<GameDetails />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;

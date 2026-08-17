@@ -1,60 +1,13 @@
 export interface Game {
     id: number;
     title: string;
+    thumbnail: string;
+    short_description: string;
+    game_url: string;
     genre: string;
-    rating: number;
-    releaseYear: number;
+    platform: string;
+    publisher: string;
+    developer: string;
+    release_date: string;
+    freetogame_profile_url: string;
 }
-
-export const games: Game[] = [
-    { id: 1, title: "Minecraft", genre: "Survival", rating: 9.8, releaseYear: 2011 },
-    { id: 2, title: "Grand Theft Auto V", genre: "Action", rating: 9.5, releaseYear: 2013 },
-    { id: 3, title: "Tetris", genre: "Puzzle", rating: 9.9, releaseYear: 1984 },
-    { id: 4, title: "Wii Sports", genre: "Sports", rating: 8.5, releaseYear: 2006 },
-    { id: 5, title: "PUBG: Battlegrounds", genre: "Shooter", rating: 7.8, releaseYear: 2017 },
-    { id: 6, title: "Mario Kart 8 Deluxe", genre: "Racing", rating: 9.3, releaseYear: 2017 },
-    { id: 7, title: "Red Dead Redemption 2", genre: "Action", rating: 9.7, releaseYear: 2018 },
-    { id: 8, title: "Super Mario Bros.", genre: "Platformer", rating: 9.6, releaseYear: 1985 },
-    { id: 9, title: "Overwatch 2", genre: "Shooter", rating: 7.2, releaseYear: 2022 },
-    { id: 10, title: "The Witcher 3: Wild Hunt", genre: "RPG", rating: 9.8, releaseYear: 2015 },
-    { id: 11, title: "Pokémon Red/Green/Blue/Yellow", genre: "RPG", rating: 9.4, releaseYear: 1996 },
-    { id: 12, title: "Terraria", genre: "Survival", rating: 9.0, releaseYear: 2011 },
-    { id: 13, title: "Animal Crossing: New Horizons", genre: "Simulation", rating: 9.0, releaseYear: 2020 },
-    { id: 14, title: "Pac-Man", genre: "Arcade", rating: 9.5, releaseYear: 1980 },
-    { id: 15, title: "Call of Duty: Modern Warfare", genre: "Shooter", rating: 8.8, releaseYear: 2019 },
-    { id: 16, title: "Diablo III", genre: "RPG", rating: 8.2, releaseYear: 2012 },
-    { id: 17, title: "Super Smash Bros. Ultimate", genre: "Fighting", rating: 9.4, releaseYear: 2018 },
-    { id: 18, title: "The Legend of Zelda: Breath of the Wild", genre: "Action", rating: 9.9, releaseYear: 2017 },
-    { id: 19, title: "Cyberpunk 2077", genre: "RPG", rating: 8.6, releaseYear: 2020 },
-    { id: 20, title: "Elden Ring", genre: "RPG", rating: 9.8, releaseYear: 2022 },
-    { id: 21, title: "Stardew Valley", genre: "Simulation", rating: 9.6, releaseYear: 2016 },
-    { id: 22, title: "Hogwarts Legacy", genre: "RPG", rating: 8.5, releaseYear: 2023 },
-    { id: 23, title: "Super Mario Odyssey", genre: "Platformer", rating: 9.7, releaseYear: 2017 },
-    { id: 24, title: "Borderlands 2", genre: "Shooter", rating: 9.1, releaseYear: 2012 },
-    { id: 25, title: "Fallout 4", genre: "RPG", rating: 8.7, releaseYear: 2015 },
-    { id: 26, title: "Apex Legends", genre: "Shooter", rating: 8.9, releaseYear: 2019 },
-    { id: 27, title: "Fortnite", genre: "Shooter", rating: 8.5, releaseYear: 2017 },
-    { id: 28, title: "League of Legends", genre: "MOBA", rating: 8.8, releaseYear: 2009 },
-    { id: 29, title: "Valorant", genre: "Shooter", rating: 8.6, releaseYear: 2020 },
-    { id: 30, title: "Counter-Strike 2", genre: "Shooter", rating: 8.4, releaseYear: 2023 },
-    { id: 31, title: "Roblox", genre: "Sandbox", rating: 7.5, releaseYear: 2006 },
-    { id: 32, title: "Genshin Impact", genre: "RPG", rating: 8.7, releaseYear: 2020 },
-    { id: 33, title: "Rocket League", genre: "Sports", rating: 8.9, releaseYear: 2015 },
-    { id: 34, title: "Destiny 2", genre: "Shooter", rating: 8.2, releaseYear: 2017 },
-    { id: 35, title: "World of Warcraft", genre: "MMORPG", rating: 9.2, releaseYear: 2004 },
-    { id: 36, title: "Baldur's Gate 3", genre: "RPG", rating: 9.9, releaseYear: 2023 },
-    { id: 37, title: "Final Fantasy XIV", genre: "MMORPG", rating: 9.4, releaseYear: 2013 },
-    { id: 38, title: "Among Us", genre: "Party", rating: 8.0, releaseYear: 2018 },
-    { id: 39, title: "Helldivers 2", genre: "Shooter", rating: 8.9, releaseYear: 2024 },
-    { id: 40, title: "Palworld", genre: "Survival", rating: 8.3, releaseYear: 2024 },
-    { id: 41, title: "Dead by Daylight", genre: "Horror", rating: 7.9, releaseYear: 2016 },
-    { id: 42, title: "Rainbow Six Siege", genre: "Shooter", rating: 8.8, releaseYear: 2015 },
-    { id: 43, title: "Dota 2", genre: "MOBA", rating: 9.0, releaseYear: 2013 },
-    { id: 44, title: "Rust", genre: "Survival", rating: 8.1, releaseYear: 2013 },
-    { id: 45, title: "Warframe", genre: "Action", rating: 8.6, releaseYear: 2013 },
-    { id: 46, title: "Lethal Company", genre: "Horror", rating: 8.7, releaseYear: 2023 },
-    { id: 47, title: "Team Fortress 2", genre: "Shooter", rating: 9.3, releaseYear: 2007 },
-    { id: 48, title: "Phasmophobia", genre: "Horror", rating: 8.5, releaseYear: 2020 },
-    { id: 49, title: "Sea of Thieves", genre: "Action", rating: 8.0, releaseYear: 2018 },
-    { id: 50, title: "DayZ", genre: "Survival", rating: 7.5, releaseYear: 2018 }
-];

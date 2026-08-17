@@ -1,29 +1,25 @@
-.game-box {
+.game-card {
     color: white;    
     background-color: var(--glass-bg, rgba(15, 23, 42, 0.6));
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
-    font-family: 'Outfit', sans-serif; 
-    font-size: 24px;
-    font-weight: 600;
-    padding: 15px 25px;
-    margin-bottom: 10px;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     cursor: pointer;
+    overflow: hidden;
 }
 
-.game-box:hover {
-    background-color: rgba(3, 105, 161, 0.7); /* Deep blue on hover */
-    transform: translateY(-3px) scale(1.02);
+.game-card:hover {
+    background-color: rgba(3, 105, 161, 0.7) !important; /* Deep blue on hover */
+    transform: translateY(-3px) scale(1.1);
     box-shadow: 0 10px 20px rgba(3, 105, 161, 0.3);
     border-color: rgba(255, 255, 255, 0.3);
 }
 
-.game-box:active {
-    transform: translateY(0) scale(0.98);
-    background-color: rgba(14, 165, 233, 0.8);
+.game-card:active {
+    transform: translateY(0) scale(1.02);
+    background-color: rgba(14, 165, 233, 0.8) !important;
     box-shadow: 0 4px 8px rgba(3, 105, 161, 0.4);
 }

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-
+import { useRef, useState, type FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 type DropdownItem = { label: string; href?: string; onClick?: () => void };
 
@@ -9,14 +9,23 @@ type DropdownGroup = {
 };
 
 interface NavBarProps{
+    genres: string[];
     onSelectSort: (sortOrder: string) => void;
-    onSelectRating: (rating: number) => void;
     onSelectGenre: (genre: string) => void;
+    onSearch: (searchText: string) => void;
 }
 
-function NavBar({onSelectSort,onSelectRating,onSelectGenre}: NavBarProps) {
-    const defaultTitles = ['Sort By', 'Ratings', 'Genres'];
+function NavBar({ genres, onSelectSort, onSelectGenre, onSearch }: NavBarProps) {
+    const defaultTitles = ['Sort By', 'Genres'];
     const [groupTitles, setGroupTitles] = useState(defaultTitles);
+
+    const navigate = useNavigate();
+    const searchRef = useRef<HTMLInputElement>(null);
+
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        onSearch(event.target.value);
+        navigate('/');
+    };
 
     const handleItemClick = (groupIndex: number, label: string, onClick?: () => void) => {
         setGroupTitles(prev => {
@@ -25,6 +34,7 @@ function NavBar({onSelectSort,onSelectRating,onSelectGenre}: NavBarProps) {
             return newTitles;
         });
         if (onClick) onClick();
+        navigate('/'); // Take the user back to the home page to see the filtered list!
     };
 
     const dropdownGroups: DropdownGroup[] = [
@@ -40,19 +50,11 @@ function NavBar({onSelectSort,onSelectRating,onSelectGenre}: NavBarProps) {
         {
             title: groupTitles[1],
             items: [
-                { label: 'All', onClick: () => onSelectRating(0) },
-                { label: 'Highest Rated', onClick: () => onSelectRating(10) },
-                { label: 'Lowest Rated', onClick: () => onSelectRating(1) }
-            ]
-        },
-        {
-            title: groupTitles[2],
-            items: [
                 { label: 'All', onClick: () => onSelectGenre("") },
-                { label: 'Action', onClick: () => onSelectGenre("Action") },
-                { label: 'RPG', onClick: () => onSelectGenre("RPG") },
-                { label: 'Shooter', onClick: () => onSelectGenre("Shooter") },
-                { label: 'Strategy', onClick: () => onSelectGenre("Strategy") }
+                ...genres.map(genre => ({
+                    label: genre,
+                    onClick: () => onSelectGenre(genre)
+                }))
             ]
         }
     ];
@@ -60,7 +62,7 @@ function NavBar({onSelectSort,onSelectRating,onSelectGenre}: NavBarProps) {
     return (
         <nav className="navbar navbar-expand-lg glass-navbar sticky-top">
             <div className="container-fluid">
-                <a className="navbar-brand" href="#">Home</a>
+                <Link className="navbar-brand" to="/">Home</Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -72,7 +74,7 @@ function NavBar({onSelectSort,onSelectRating,onSelectGenre}: NavBarProps) {
                                 <button className="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                     {group.title}
                                 </button>
-                                <ul className="dropdown-menu glass-dropdown">
+                                <ul className="dropdown-menu glass-dropdown" style={{ maxHeight: '400px', overflowY: 'auto' }}>
                                     {group.items.map((item, itemIndex) => (
                                         <li key={itemIndex}>
                                             <a 
@@ -92,9 +94,16 @@ function NavBar({onSelectSort,onSelectRating,onSelectGenre}: NavBarProps) {
                         ))}
                     </ul>
 
-                    <form className="d-flex" role="search">
-                        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-                        <button className="btn btn-outline-primary" type="submit">Search</button>
+                    <form className="d-flex" role="search" onSubmit={(e) => e.preventDefault()}>
+                        <input 
+                            ref={searchRef} 
+                            className="form-control form-control-lg me-2" 
+                            style={{ minWidth: '350px' }}
+                            type="search" 
+                            placeholder="Search games..." 
+                            aria-label="Search"
+                            onChange={handleSearchChange}
+                        />
                     </form>
                 </div>
             </div>

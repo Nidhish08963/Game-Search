@@ -1,53 +1,49 @@
 import { useState } from "react";
 import "./ListGroup.css";
 import { type Game } from "../data/games";
+import { Link } from "react-router-dom"
 
-//define shape of list group props
 interface ListGroupProps{
   items: Game[];
   onSelectItem: (item: Game, index: number) => void;
 }
 
 function ListGroup( {items,onSelectItem}: ListGroupProps) {
+  const [selectedIndex,setSelectedIndex] = useState(-1);
 
-const [selectedIndex,setSelectedIndex] = useState(-1);
-//event handler
-
-//to render data dynamically use curly braces
-//use map to iterate over the array and return a list item for each item( like a for loop)
-
-
-return (
-  <>
-    <ul className="list-unstyled row row-cols-3 g-4">
-    {items.map((item, index) => (
-
-    //Class names
-    <li className="col" key={item.id}>
-      <div 
-        className={`game-box rounded d-flex justify-content-center align-items-center text-center h-100 p-3`}
-        style={{ 
-          aspectRatio: "3 / 2",
-          // Animate the border by having it always exist but hidden (transparent) until selected
-          border: "4px solid",
-          borderColor: selectedIndex === index ? "black" : "transparent"
-        }}
-        
-        //making the set selected index to know that the item is selected(giving it new index pressed)
-        onClick={() => {
-          setSelectedIndex(index);
-          onSelectItem(item, index);
-        }}
-      >
-        <span className="m-0" style={{ fontFamily: "inherit" }}>{item.title}</span>
-      </div>
-    </li>
-    ))}
-    </ul>
-  </>
-);
-
+  return (
+    <>
+      <ul className="list-unstyled row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+      {items.map((item, index) => (
+        <li className="col" key={item.id}>
+          <Link
+            to={`/game/${item.id}`}
+            style={{textDecoration:"none", color:"inherit", display:"block", height:"100%"}}
+          >
+            <div 
+              className="card h-100 shadow-sm game-card"
+              style={{ 
+                // Animate the border by having it always exist but hidden (transparent) until selected
+                border: "4px solid",
+                borderColor: selectedIndex === index ? "black" : "transparent",
+                transition: "transform 0.2s ease-in-out, border-color 0.2s"
+              }}
+              onClick={() => {
+                setSelectedIndex(index);
+                onSelectItem(item, index);
+              }}
+            >
+              <img src={item.thumbnail} className="card-img-top" alt={item.title} style={{ objectFit: "cover", aspectRatio: "16/9" }} />
+              <div className="card-body d-flex flex-column justify-content-center text-center">
+                <h5 className="card-title m-0" style={{ fontFamily: "inherit", fontWeight: 700 }}>{item.title}</h5>
+              </div>
+            </div>
+          </Link>
+        </li>
+      ))}
+      </ul>
+    </>
+  );
 }
 
 export default ListGroup;
-
